@@ -1,0 +1,42 @@
+<html>
+	<head>
+		<script>
+
+		function getUtil(url, callback) {
+			let xmlhttp;
+
+			xmlhttp = new XMLHttpRequest();
+
+			xmlhttp.onreadystatechange = function() {
+				if(xmlhttp.readyState == 4 && xmlhttp.status === 200) {
+					callback(xmlhttp.responseText)
+				}
+			}
+
+			xmlhttp.open("GET",url, true);
+			xmlhttp.send()
+		}
+
+		function init() {
+			fetch("https://www.reddit.com/r/javascript.json")
+				.then((redditData) => redditData.json())
+				.then((data) => {
+					data.data.children.forEach((info) => {
+				 	console.log(info.data.title)
+
+				 	var article = document.createElement('article');
+					article.innerHTML = "<p>" + info.data.title + "</p>";
+
+					document.getElementById("reddit").append(article);
+					});
+				})
+		}
+				
+		window.onload = init;
+		</script>
+	</head>
+	<body>
+			<section id="reddit">
+			</section>
+	</body>
+</html>

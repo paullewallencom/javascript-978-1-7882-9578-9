@@ -1,0 +1,56 @@
+<html>
+	<head>
+		<script>
+
+		function getUtil(url, callback) {
+			let xmlhttp;
+
+			xmlhttp = new XMLHttpRequest();
+
+			xmlhttp.onreadystatechange = function() {
+				if(xmlhttp.readyState == 4 && xmlhttp.status === 200) {
+					callback(xmlhttp.responseText)
+				}
+			}
+
+			xmlhttp.open("GET",url, true);
+			xmlhttp.send()
+		}
+
+		function init() {
+			getUtil("https://www.reddit.com/r/javascript.json",(redditData) => {
+				JSON.parse(redditData).data.children.forEach((info) => {
+
+				 	var article = document.createElement('article');
+					article.innerHTML = "<p>" + info.data.title + "</p>";
+					article.className = "col-md-12 col-xs-12"
+
+					document.getElementById("reddit").append(article);
+				});
+			})
+		}
+				
+		window.onload = init;
+		document.onreadystatechange = function () {
+		  var state = document.readyState;
+		  if (state == 'interactive') {
+		      console.log("asdasds")
+		  } else if (state == 'complete') {
+		      initOnCompleteLoad();
+		  }
+		}​;
+		</script>
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+		<style>
+			@media only screen and (max-width: 600px) {
+			    body {
+			        background-color: lightblue;
+			    }
+			}
+		</style>
+	</head>
+	<body>
+			<section id="reddit" class="row">
+			</section>
+	</body>
+</html>
